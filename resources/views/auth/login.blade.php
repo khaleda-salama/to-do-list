@@ -8,7 +8,7 @@
                     <x-form.field name="email" label="Email" type="email" />
                     <x-form.field name="password" label="Password" type="password" />
 
-                    <button type="submit" class="btn w-full h-10 mt-2">Sign In</button>
+                    <button type="submit" class="btn w-full h-10 mt-2" data-test="login-btn-nav">Sign In</button>
 
                 </form>
 
