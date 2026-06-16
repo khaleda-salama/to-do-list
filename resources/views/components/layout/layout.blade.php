@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>idea</title>
-    @vite(['resources/css/app.css'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-background text-foreground">
 
@@ -16,5 +16,8 @@
 
    </main>
 
+   @session('success')
+        <div class="message bg-primary px-4 py-3 fixed bottom-4 right-4 rounded-lg animate-toast-in">{{ $value }}</div>
+   @endsession
 </body>
 </html>
