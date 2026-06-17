@@ -3,24 +3,23 @@
 use App\Models\Idea;
 use App\Models\User;
 
-
 test('it belongs to a user', function () {
 
-   $idea = Idea::factory()->create();
+    $idea = Idea::factory()->create();
 
-   expect($idea->user)->toBeInstanceOf(User::class);
+    expect($idea->user)->toBeInstanceOf(User::class);
 
 });
 
 test('it can have steps', function () {
 
-   $idea = Idea::factory()->create();
+    $idea = Idea::factory()->create();
 
-   expect($idea->steps)->toBeEmpty();
+    expect($idea->steps)->toBeEmpty();
 
-   $idea->steps()->create([
-       'description' => 'Step 1',
-   ]);
+    $idea->steps()->create([
+        'description' => 'Step 1',
+    ]);
 
     expect($idea->fresh()->steps)->toHaveCount(1);
 });

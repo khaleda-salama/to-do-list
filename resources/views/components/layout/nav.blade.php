@@ -3,8 +3,7 @@
 
        <div>
           <a href="/">
-           <img src="/images/logo.png" alt="Idea logo" width="100">
-
+              <img src="/images/logo.png" alt="Idea logo" width="100">
            </a>
         </div>
 
