@@ -7,7 +7,8 @@
                 Capture your thoughts. Make a plan
             </p>
 
-            <x-card is="button" class="create-idea-btn mt-10 cursor-pointer h-32 w-full text-left">
+            <x-card is="button" class="create-idea-btn mt-10 cursor-pointer h-32 w-full text-left"
+                data-test="create-idea-btn">
                 <p>What's the idea?</p>
             </x-card>
         </header>
@@ -72,7 +73,7 @@
                             <div class="flex gap-x-3">
                                 @foreach (App\Enums\IdeaStatus::cases() as $status)
                                     <button type="button" class="status-btn btn transition flex-1 h-10"
-                                        data-status="{{ $status->value }}">
+                                        data-status="{{ $status->value }}" data-test="status-btn-{{ $status->value }}">
                                         {{ $status->label() }}
                                     </button>
                                 @endforeach
