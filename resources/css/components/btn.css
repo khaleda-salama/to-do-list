@@ -13,6 +13,8 @@ button {
     height: calc(var(--spacing) * 8);
     line-height: calc(var(--spacing) * 8);
     display: inline-block;
+    border: 1px solid transparent;
+
 }
 
 .btn.btn-outlined {
@@ -23,7 +25,7 @@ button {
 }
 
 .btn.btn-outlined:hover {
-    background: color-mix(in srgb, black 25%, var(--color-input));
+    background: color-mix(in srgb, black 5%, var(--color-input));
 }
 
 .btn.btn-ghost {

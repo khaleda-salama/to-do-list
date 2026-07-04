@@ -20,15 +20,10 @@ class IdeaController extends Controller
     {
         $user = Auth::user();
 
-        $status = $request->status;
-
-        if (! in_array($status, IdeaStatus::values())) {
-            $status = null;
-        }
-
         $ideas = $user
             ->ideas()
-            ->when($status, fn ($query, $status) => $query->where('status', $status))
+            ->when(in_array($request->status, IdeaStatus::values()), fn ($query) => $query->where('status', $request->status))
+            ->latest()
             ->get();
 
         return view('idea.index', [
@@ -48,9 +43,13 @@ class IdeaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreIdeaRequest $request): void
+    public function store(StoreIdeaRequest $request)
     {
-        //
+        // dd($request->all());
+
+        Auth::user()->ideas()->create($request->validated());
+
+        return to_route('idea.index')->with('success', 'Idea created successfully!');
     }
 
     /**
@@ -82,8 +81,12 @@ class IdeaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Idea $idea): void
+    public function destroy(Idea $idea)
     {
-        //
+        // authorize that this is allowed
+        $idea->delete();
+
+        // return redirect('/ideas');
+        return to_route('idea.index');
     }
 }

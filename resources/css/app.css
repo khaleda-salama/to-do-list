@@ -21,6 +21,8 @@
     --color-muted-foreground: oklch(0.6 0 0);
     --animate-toast-in: toast-in 0.5s ease-out forwards;
     --animate-toast-out: toast-out 0.5s ease-out forwards;
+    --animate-slide-in: slide-in 0.2s ease-out forwards;
+    --animate-slide-out: slide-out 0.2s ease-out forwards;
 
 }
 
