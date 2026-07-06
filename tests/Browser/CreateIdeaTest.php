@@ -12,6 +12,10 @@ it('Create A New Idea', function () {
         ->fill('title', 'My New Idea')
         ->click('@status-btn-completed')
         ->fill('description', 'An Testing Description')
+        ->fill('@new-link', 'https://example.com')
+        ->click('@add-link-btn')
+        ->fill('@new-link', 'https://laravel.com')
+        ->click('@add-link-btn')
         ->click('Create')
         ->assertRoute('idea.index');
 
@@ -20,6 +24,7 @@ it('Create A New Idea', function () {
         'title' => 'My New Idea',
         'status' => 'completed',
         'description' => 'An Testing Description',
+        'links' => ['https://example.com', 'https://laravel.com'],
     ]);
 
 });

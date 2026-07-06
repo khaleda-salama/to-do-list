@@ -30,6 +30,8 @@ class StoreIdeaRequest extends FormRequest
             'title' => ['required', 'string', 'min:5', 'max:255'],
             'description' => ['nullable', 'string', 'min:20'],
             'status' => ['required', 'string', Rule::enum(IdeaStatus::class)],
+            'links' => ['nullable', 'array'],
+            'links.*' => ['max:255', 'url'],
         ];
     }
 }

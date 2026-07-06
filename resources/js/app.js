@@ -64,3 +64,33 @@ statusBtns.forEach((btn) => {
         statusInput.value = btn.dataset.status;
     });
 });
+
+const newLinkInput = document.getElementById("new-link");
+const link = document.querySelector(".link");
+const plusIcon = document.querySelector(".plus-icon");
+
+const template = document.getElementById("link-template");
+const hiddenLinks = document.getElementById("hidden-links");
+
+if (plusIcon) {
+    plusIcon.addEventListener("click", () => {
+        const link = newLinkInput.value.trim();
+        if (!link) return;
+
+        const clone = template.content.cloneNode(true);
+        const input = clone.querySelector("div .link");
+        input.value = link;
+
+        hiddenLinks.appendChild(clone);
+
+        newLinkInput.value = "";
+    });
+}
+
+hiddenLinks.addEventListener("click", (e) => {
+    if (!e.target.closest(".remove-link")) return;
+
+    const container = e.target.closest(".link-container");
+
+    container.remove();
+});

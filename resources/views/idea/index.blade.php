@@ -14,8 +14,8 @@
         </header>
 
         <div>
-            <a href="{{ route('idea.index') }}" class="btn {{ request()->has('status') ? 'btn-outlined' : '' }}">All
-                <span class="text-xs pl-3">{{ $statusCounts->get('all') }}</span></a>
+            <a href="{{ route('idea.index') }}" class="btn {{ request()->has('status') ? 'btn-outlined' : '' }}">
+                All<span class="text-xs pl-3">{{ $statusCounts->get('all') }}</span></a>
             @foreach (App\Enums\IdeaStatus::cases() as $status)
                 <a href="{{ route('idea.index') }}?status={{ $status->value }}"
                     class="btn {{ request('status') === $status->value ? '' : 'btn-outlined' }}">
@@ -53,6 +53,7 @@
         <div
             class="create-idea-modal hidden transition duration-200 fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs">
             <x-card class="shadow-xl max-w-2xl w-full max-h-[80vh] overflow-auto">
+
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-xl font-bold">New Idea</h2>
 
@@ -86,6 +87,36 @@
                         <x-form.field label="Description" name="description" type="textarea"
                             placeholder="Describe your idea..." />
 
+
+                        <template id="link-template">
+                            <div class="link-container flex gap-x-2 items-center">
+                                <input name="links[]" class="link input">
+                                <button type="button" class="remove-link transition hover:text-red-500 form-muted-icon">
+                                    <x-icons.close />
+                                </button>
+                            </div>
+                        </template>
+
+
+
+                        <div>
+                            <fieldset class="space-y-3">
+                                <legend class="label">Links</legend>
+
+                                <div id="hidden-links" class="space-y-1">
+                                </div>
+
+                                <div class="flex gap-x-2 items-center">
+                                    <input type="url" id="new-link" data-test="new-link" class="input flex-1"
+                                        placeholder="https://example.com" autocomplete="on" spellcheck="false" />
+                                    <button type="button" class="form-muted-icon" data-test="add-link-btn">
+                                        <x-icons.close class="plus-icon rotate-45" />
+                                    </button>
+                                </div>
+                                <x-form.error name="links" />
+                                <x-form.error name="links.*" />
+                            </fieldset>
+                        </div>
                         <div class="flex justify-end gap-x-5">
                             <button type="button" class="cancel-btn btn-outlined">Cancel</button>
                             <button type="submit" class="btn">Create</button>
