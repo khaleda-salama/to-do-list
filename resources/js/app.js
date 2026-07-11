@@ -65,32 +65,59 @@ statusBtns.forEach((btn) => {
     });
 });
 
-const newLinkInput = document.getElementById("new-link");
-const link = document.querySelector(".link");
-const plusIcon = document.querySelector(".plus-icon");
+function addLinkAndSteps(
+    selector,
+    btn,
+    selector1,
+    selector2,
+    selector3,
+    selector4,
+) {
+    if (selector) {
+        selector.addEventListener("click", (e) => {
+            if (!e.target.closest(btn)) return;
 
-const template = document.getElementById("link-template");
-const hiddenLinks = document.getElementById("hidden-links");
+            const stepOrLink = selector1.value.trim();
+            if (!stepOrLink) return;
 
-if (plusIcon) {
-    plusIcon.addEventListener("click", () => {
-        const link = newLinkInput.value.trim();
-        if (!link) return;
+            const clone = selector2.content.cloneNode(true);
+            const input = clone.querySelector(selector4);
+            input.value = stepOrLink;
 
-        const clone = template.content.cloneNode(true);
-        const input = clone.querySelector("div .link");
-        input.value = link;
+            selector3.appendChild(clone);
 
-        hiddenLinks.appendChild(clone);
+            selector1.value = "";
+        });
+    }
+}
 
-        newLinkInput.value = "";
+addLinkAndSteps(
+    document.querySelector(".link-box"),
+    ".add-link-btn",
+    document.getElementById("new-link"),
+    document.getElementById("link-template"),
+    document.getElementById("hidden-links"),
+    ".links-container .link",
+);
+addLinkAndSteps(
+    document.querySelector(".step-box"),
+    ".add-step-btn",
+    document.getElementById("new-step"),
+    document.getElementById("step-template"),
+    document.getElementById("hidden-steps"),
+    ".steps-container .step",
+);
+
+function removeLinkAndSteps(selector, selector2, selector3) {
+    if (!document.getElementById(selector)) return;
+    document.getElementById(selector).addEventListener("click", (e) => {
+        if (!e.target.closest(selector2)) return;
+
+        const container = e.target.closest(selector3);
+
+        container.remove();
     });
 }
 
-hiddenLinks.addEventListener("click", (e) => {
-    if (!e.target.closest(".remove-link")) return;
-
-    const container = e.target.closest(".link-container");
-
-    container.remove();
-});
+removeLinkAndSteps("hidden-links", ".remove-link", ".links-container");
+removeLinkAndSteps("hidden-steps", ".remove-step", ".steps-container");

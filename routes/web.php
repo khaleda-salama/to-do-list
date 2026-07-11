@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterUserController;
 use App\Http\Controllers\IdeaController;
+use App\Http\Controllers\StepController;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/ideas');
@@ -15,6 +16,8 @@ Route::post('/ideas', [IdeaController::class, 'store'])->name('idea.store')->mid
 Route::get('/ideas/{idea}', [IdeaController::class, 'show'])->name('idea.show')->middleware('auth');
 Route::delete('/ideas/{idea}', [IdeaController::class, 'destroy'])->name('idea.destroy')->middleware('auth');
 Route::get('/ideas/{idea}/edit', [IdeaController::class, 'edit'])->name('idea.edit')->middleware('auth');
+
+Route::patch('/steps/{step}', [StepController::class, 'update'])->name('step.update')->middleware('auth');
 
 Route::get('/register', [RegisterUserController::class, 'create'])->middleware('guest');
 Route::post('/register', [RegisterUserController::class, 'store'])->middleware('guest');

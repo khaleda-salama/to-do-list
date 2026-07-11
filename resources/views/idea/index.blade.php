@@ -88,29 +88,58 @@
                             placeholder="Describe your idea..." />
 
 
-                        <template id="link-template">
-                            <div class="link-container flex gap-x-2 items-center">
-                                <input name="links[]" class="link input">
-                                <button type="button" class="remove-link transition hover:text-red-500 form-muted-icon">
-                                    <x-icons.close />
-                                </button>
-                            </div>
-                        </template>
 
+                        <div>
+                            <fieldset class="space-y-3">
+                                <legend class="label">Actionable Steps</legend>
 
+                                <template id="step-template">
+                                    <div class="steps-container flex gap-x-2 items-center">
+                                        <input name="steps[]" class="step input" readonly>
+                                        <button type="button"
+                                            class="remove-step transition hover:text-red-500 form-muted-icon">
+                                            <x-icons.close />
+                                        </button>
+                                    </div>
+                                </template>
+
+                                <div id="hidden-steps" class="space-y-1">
+                                </div>
+
+                                <div class="step-box flex gap-x-2 items-center">
+                                    <input type="text" id="new-step" data-test="new-step" class="input flex-1"
+                                        placeholder="What needs to be done?" spellcheck="false" />
+                                    <button type="button" class="add-step-btn form-muted-icon" data-test="add-step-btn">
+                                        <x-icons.close class="rotate-45" />
+                                    </button>
+                                </div>
+                                <x-form.error name="steps" />
+                                <x-form.error name="steps.*" />
+                            </fieldset>
+                        </div>
 
                         <div>
                             <fieldset class="space-y-3">
                                 <legend class="label">Links</legend>
 
+                                <template id="link-template">
+                                    <div class="links-container flex gap-x-2 items-center">
+                                        <input name="links[]" class="link input" readonly>
+                                        <button type="button"
+                                            class="remove-link transition hover:text-red-500 form-muted-icon">
+                                            <x-icons.close />
+                                        </button>
+                                    </div>
+                                </template>
+
                                 <div id="hidden-links" class="space-y-1">
                                 </div>
 
-                                <div class="flex gap-x-2 items-center">
+                                <div class="link-box flex gap-x-2 items-center">
                                     <input type="url" id="new-link" data-test="new-link" class="input flex-1"
                                         placeholder="https://example.com" autocomplete="on" spellcheck="false" />
-                                    <button type="button" class="form-muted-icon" data-test="add-link-btn">
-                                        <x-icons.close class="plus-icon rotate-45" />
+                                    <button type="button" class="add-link-btn form-muted-icon" data-test="add-link-btn">
+                                        <x-icons.close class="rotate-45" />
                                     </button>
                                 </div>
                                 <x-form.error name="links" />
