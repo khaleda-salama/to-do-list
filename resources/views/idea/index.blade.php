@@ -8,7 +8,7 @@
             </p>
 
             <x-card is="button" class="create-idea-btn mt-10 cursor-pointer h-32 w-full text-left"
-                data-test="create-idea-btn">
+                data-test="create-idea-button">
                 <p>What's the idea?</p>
             </x-card>
         </header>
