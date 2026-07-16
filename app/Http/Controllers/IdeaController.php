@@ -46,6 +46,7 @@ class IdeaController extends Controller
      */
     public function store(StoreIdeaRequest $request, CreateIdea $action)
     {
+        dd('STORE');
 
         $action->handle($request->safe()->all());
 
@@ -57,6 +58,8 @@ class IdeaController extends Controller
      */
     public function show(Idea $idea)
     {
+        // Gate::authorize('workWith', $idea);
+
         return view('idea.show', [
             'idea' => $idea,
         ]);
@@ -83,7 +86,6 @@ class IdeaController extends Controller
      */
     public function destroy(Idea $idea)
     {
-        // authorize that this is allowed
         $idea->delete();
 
         // return redirect('/ideas');

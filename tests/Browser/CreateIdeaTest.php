@@ -21,7 +21,7 @@ it('Create A New Idea', function () {
         ->fill('@new-link', 'https://laravel.com')
         ->click('@add-link-btn')
         ->click('Create')
-        ->assertPathIs('/ideas');
+        ->assertRoute('idea.index');
 
     expect($idea = $user->ideas()->first())->toMatchArray([
         'title' => 'My New Idea',
