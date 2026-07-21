@@ -13,12 +13,13 @@ if (flashMessage) {
     });
 }
 
-const btnCreate = document.querySelector(".create-idea-btn");
-const modal = document.querySelector(".create-idea-modal");
+const btnCreate = document.querySelector(".create-idea");
+const btnEdit = document.querySelector(".edit-idea");
+const modal = document.querySelector(".idea-modal");
 const closeModal = document.querySelector(".close-modal");
 const cancelBtn = document.querySelector(".cancel-btn");
 
-if (modal && btnCreate) {
+if (modal) {
     function openModal() {
         modal.classList.remove("hidden", "animate-slide-out");
         modal.classList.add("animate-slide-in");
@@ -33,9 +34,10 @@ if (modal && btnCreate) {
         }, 300);
     }
 
-    btnCreate.addEventListener("click", openModal);
-    closeModal?.addEventListener("click", hideModal);
-    cancelBtn?.addEventListener("click", hideModal);
+    btnCreate?.addEventListener("click", openModal);
+    btnEdit?.addEventListener("click", openModal);
+    closeModal.addEventListener("click", hideModal);
+    cancelBtn.addEventListener("click", hideModal);
 
     document.addEventListener("keydown", (e) => {
         if (e.key === "Escape" && !modal.classList.contains("hidden")) {
@@ -47,51 +49,58 @@ if (modal && btnCreate) {
 const statusBtns = document.querySelectorAll(".status-btn");
 const statusInput = document.querySelector(".input-status");
 
-statusBtns.forEach((btn) => btn.classList.add("btn-outlined"));
-
-if (statusBtns.length) {
-    statusBtns[0].classList.remove("btn-outlined");
-    statusInput.value = statusBtns[0].dataset.status;
-}
-
-statusBtns.forEach((btn) => {
-    btn.addEventListener("click", () => {
-        statusBtns.forEach((b) => {
-            b.classList.add("btn-outlined");
+if (statusInput && statusBtns.length) {
+    function selectStatus(status) {
+        statusBtns.forEach((btn) => {
+            btn.classList.toggle("btn-outlined", btn.dataset.status !== status);
         });
 
-        btn.classList.remove("btn-outlined");
-        statusInput.value = btn.dataset.status;
+        statusInput.value = status;
+    }
+
+    selectStatus(statusInput.value || statusBtns[0].dataset.status);
+
+    statusBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            selectStatus(btn.dataset.status);
+        });
     });
-});
+}
 
 function addLinkAndSteps(
     selector,
     btn,
-    selector1,
-    selector2,
-    selector3,
-    selector4,
+    input,
+    template,
+    container,
+    inputSelector,
 ) {
+    function append(value) {
+        const clone = template.content.cloneNode(true);
+
+        clone.querySelector(inputSelector).value = value;
+
+        container.appendChild(clone);
+    }
+
     if (selector) {
         selector.addEventListener("click", (e) => {
             if (!e.target.closest(btn)) return;
 
-            const stepOrLink = selector1.value.trim();
-            if (!stepOrLink) return;
+            const value = input.value.trim();
 
-            const clone = selector2.content.cloneNode(true);
-            const input = clone.querySelector(selector4);
-            input.value = stepOrLink;
+            if (!value) return;
 
-            selector3.appendChild(clone);
+            append(value);
 
-            selector1.value = "";
+            input.value = "";
         });
     }
+
+    return append;
 }
 
-addLinkAndSteps(
+const appendLink = addLinkAndSteps(
     document.querySelector(".link-box"),
     ".add-link-btn",
     document.getElementById("new-link"),
@@ -99,7 +108,8 @@ addLinkAndSteps(
     document.getElementById("hidden-links"),
     ".links-container .link",
 );
-addLinkAndSteps(
+
+const appendStep = addLinkAndSteps(
     document.querySelector(".step-box"),
     ".add-step-btn",
     document.getElementById("new-step"),
@@ -107,6 +117,14 @@ addLinkAndSteps(
     document.getElementById("hidden-steps"),
     ".steps-container .step",
 );
+
+window.oldSteps?.forEach((step) => {
+    appendStep(step);
+});
+
+window.oldLinks?.forEach((link) => {
+    appendLink(link);
+});
 
 function removeLinkAndSteps(selector, selector2, selector3) {
     if (!document.getElementById(selector)) return;
@@ -121,3 +139,10 @@ function removeLinkAndSteps(selector, selector2, selector3) {
 
 removeLinkAndSteps("hidden-links", ".remove-link", ".links-container");
 removeLinkAndSteps("hidden-steps", ".remove-step", ".steps-container");
+
+const deleteImageBtn = document.querySelector(".delete-image");
+const deleteImageForm = document.querySelector(".delete-image-form");
+
+deleteImageBtn?.addEventListener("click", () => {
+    deleteImageForm?.requestSubmit();
+});

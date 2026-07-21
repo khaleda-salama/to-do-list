@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterUserController;
 use App\Http\Controllers\IdeaController;
+use App\Http\Controllers\IdeaImageController;
 use App\Http\Controllers\StepController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,8 +25,13 @@ Route::delete('/ideas/{idea}', [IdeaController::class, 'destroy'])
     ->middleware('auth')
     ->can('workWith', 'idea');
 
-Route::get('/ideas/{idea}/edit', [IdeaController::class, 'edit'])
-    ->name('idea.edit')
+Route::patch('/ideas/{idea}', [IdeaController::class, 'update'])
+    ->name('idea.update')
+    ->middleware('auth')
+    ->can('workWith', 'idea');
+
+Route::delete('/ideas/{idea}/image', [IdeaImageController::class, 'destroy'])
+    ->name('idea.image.destroy')
     ->middleware('auth')
     ->can('workWith', 'idea');
 
