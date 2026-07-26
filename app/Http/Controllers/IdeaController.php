@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Actions\CreateIdea;
+use App\Actions\UpdateIdea;
 use App\Enums\IdeaStatus;
 use App\Http\Requests\IdeaRequest;
 use App\Models\Idea;
@@ -74,7 +75,14 @@ class IdeaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(IdeaRequest $request, Idea $idea): void {}
+    public function update(IdeaRequest $request, Idea $idea, UpdateIdea $action)
+    {
+
+        $action->handle($request->safe()->all(), $idea);
+
+        return back()->with('success', 'Idea updated!');
+
+    }
 
     /**
      * Remove the specified resource from storage.

@@ -68,7 +68,9 @@
 
                         <template id="step-template">
                             <div class="steps-container flex gap-x-2 items-center">
-                                <input name="steps[]" class="step input" readonly>
+                                <input type="hidden" class="step-id input">
+                                <input class="step-description input" readonly>
+                                <input type="hidden" class="step-completed">
                                 <button type="button" class="remove-step transition hover:text-red-500 form-muted-icon">
                                     <x-icons.close />
                                 </button>
@@ -119,7 +121,8 @@
                 </div>
                 <div class="flex justify-end gap-x-5">
                     <button type="button" class="cancel-btn btn-outlined">Cancel</button>
-                    <button type="submit" class="btn">{{ $idea->exists ? 'Update' : 'Create' }}</button>
+                    <button type="submit" class="btn"
+                        data-test="{{ $idea->exists ? 'update-btn' : 'create-btn' }}">{{ $idea->exists ? 'Update' : 'Create' }}</button>
                 </div>
 
             </div>
@@ -137,6 +140,6 @@
 </div>
 
 <script>
-    window.oldSteps = @json(old('steps', $idea->steps->pluck('description')));
+    window.oldSteps = @json(old('steps', $idea->steps->toArray()));
     window.oldLinks = @json(old('links', $idea->links ?? []));
 </script>
