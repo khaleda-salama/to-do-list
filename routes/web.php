@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\RegisterUserController;
 use App\Http\Controllers\IdeaController;
 use App\Http\Controllers\IdeaImageController;
 use App\Http\Controllers\StepController;
+use App\Http\Controllers\UserProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/ideas');
@@ -44,3 +45,6 @@ Route::get('/login', [LoginController::class, 'create'])->name('login')->middlew
 Route::post('/login', [LoginController::class, 'store'])->middleware('guest');
 
 Route::delete('/logout', [LogoutController::class, 'destroy'])->middleware('auth');
+
+Route::get('/profile', [UserProfileController::class, 'edit'])->name('profile.edit')->middleware('auth');
+Route::patch('/profile', [UserProfileController::class, 'update'])->name('profile.update')->middleware('auth');

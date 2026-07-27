@@ -1,7 +1,5 @@
 // Make Flash Message In all Project
 
-console.log("JS Loaded");
-
 let flashMessage = document.querySelector(".message");
 
 if (flashMessage) {
