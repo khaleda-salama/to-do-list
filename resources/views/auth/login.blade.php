@@ -7,6 +7,11 @@
 
             <x-form.field name="email" label="Email" type="email" />
             <x-form.field name="password" label="Password" type="password" />
+            <div class="text-center">
+                <a href="{{ route('google.login') }}" class="btn btn-outlined  w-full h-10 mt-2">
+                    Continue with Google <img src="/images/google.png" alt="google" class="w-5 h-5 inline ml-2">
+                </a>
+            </div>
 
             <button type="submit" class="btn w-full h-10 mt-2" data-test="login-btn-nav">Log In</button>
 

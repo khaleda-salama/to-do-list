@@ -19,8 +19,10 @@
 
     </main>
 
-    @session('success')
-        <div class="message bg-primary px-4 py-3 fixed bottom-4 right-4 rounded-lg animate-toast-in">{{ $value }}</div>
+    @session('success' ?? 'error')
+        <div
+            class="message {{ session('success') ? 'bg-primary' : 'bg-red-500' }} px-4 py-3 fixed bottom-4 right-4 rounded-lg animate-toast-in">
+            {{ $value }}</div>
     @endsession
 </body>
 

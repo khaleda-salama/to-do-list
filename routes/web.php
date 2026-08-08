@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterUserController;
@@ -11,7 +12,7 @@ use App\Http\Controllers\StepController;
 use App\Http\Controllers\UserProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::redirect('/', '/ideas');
+Route::redirect('/', '/ideas')->middleware('auth');
 
 Route::get('/ideas', [IdeaController::class, 'index'])->name('idea.index')->middleware('auth');
 Route::post('/ideas', [IdeaController::class, 'store'])->name('idea.store')->middleware('auth');
@@ -43,6 +44,12 @@ Route::post('/register', [RegisterUserController::class, 'store'])->middleware('
 
 Route::get('/login', [LoginController::class, 'create'])->name('login')->middleware('guest');
 Route::post('/login', [LoginController::class, 'store'])->middleware('guest');
+
+Route::get('/auth/google', [GoogleAuthController::class, 'redirect'])->middleware('guest')
+    ->name('google.login');
+
+Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback'])->middleware('guest')
+    ->name('google.callback');
 
 Route::delete('/logout', [LogoutController::class, 'destroy'])->middleware('auth');
 
