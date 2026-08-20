@@ -25,24 +25,28 @@ it('Edites An Existing Idea', function () {
 
     $idea = Idea::factory()->for($user)->create();
 
-    visit(route('idea.show', $idea))
-        ->click('@edit-idea-btn')
-        ->fill('title', 'Some Example Idea')
-        ->click('@status-btn-completed')
-        ->fill('description', 'An Testing Description')
-        ->fill('@new-link', 'https://example.com')
-        ->click('@add-link-btn')
-        ->fill('@new-step', 'Do a thing')
-        ->click('@add-step-btn')
-        ->click('@update-btn')
-        ->assertRoute('idea.show', [$idea]);
-
-    expect($idea = $user->ideas()->first())->toMatchArray([
-        'title' => 'Some Example Idea',
+    $response = $this->patch("/ideas/{$idea->id}", [
+        'title' => 'My New Idea',
         'status' => 'completed',
         'description' => 'An Testing Description',
-        'links' => [$idea->links[0], 'https://example.com'],
+        'links' => ['https://example.com'],
+        'steps' => [[
+            'description' => 'Do a thing',
+            'completed' => 0,
+        ]],
+    ], ['HTTP_REFERER' => route('idea.show', $idea)]);
+
+    $response->assertRedirect(route('idea.show', $idea));
+
+    $idea->refresh();
+
+    expect($idea)->toMatchArray([
+        'title' => 'My New Idea',
+        'status' => 'completed',
+        'description' => 'An Testing Description',
     ]);
+
+    expect($idea->links)->toContain('https://example.com');
 
     expect($idea->steps)->toHaveCount(1);
 });

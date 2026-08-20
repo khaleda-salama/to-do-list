@@ -19,7 +19,7 @@ class CreateIdea
     {
 
         $data = collect($attributes)->only([
-            'title', 'description', 'status', 'links',
+            'title', 'description', 'status', 'links'
         ])->toArray();
 
         // Add New Key ['image'] In data Array

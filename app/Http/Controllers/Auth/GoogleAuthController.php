@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -29,12 +31,18 @@ class GoogleAuthController extends Controller
             return to_route('login')->with('error', 'Google sign-in failed. Please try again.');
         }
 
-        $user = User::where('google_id', $googleUser->getId())->first();
+        if (! $googleUser || ! $googleUser->getId() || ! $googleUser->getEmail()) {
+            return to_route('login')->with('error', 'Google sign-in failed. Please try again.');
+        }
+
+        $user = User::where('google_id', $googleUser->getId())
+            ->orWhere('email', $googleUser->getEmail())
+            ->first();
 
         if (! $user) {
             try {
                 $user = User::create([
-                    'name' => $googleUser->getName(),
+                    'name' => $googleUser->getName() ?: $googleUser->getNickname() ?: 'Google User',
                     'email' => $googleUser->getEmail(),
                     'google_id' => $googleUser->getId(),
                     'password' => Hash::make(Str::random(40)),
@@ -44,8 +52,19 @@ class GoogleAuthController extends Controller
                     throw $e;
                 }
 
-                $user = User::where('google_id', $googleUser->getId())->firstOrFail();
+                $user = User::where('google_id', $googleUser->getId())
+                    ->orWhere('email', $googleUser->getEmail())
+                    ->first();
             }
+        }
+
+        if (! $user) {
+            return to_route('login')->with('error', 'Google sign-in failed. Please try again.');
+        }
+
+        if (! $user->google_id) {
+            $user->google_id = $googleUser->getId();
+            $user->save();
         }
 
         Auth::login($user);

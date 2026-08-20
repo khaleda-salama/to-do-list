@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RegisterUserRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Password;
 
 class RegisterUserController extends Controller
 {
@@ -18,19 +16,11 @@ class RegisterUserController extends Controller
         return view('auth.register');
     }
 
-    public function store(Request $request)
+    public function store(RegisterUserRequest $request)
     {
-        $request->validate([
-            'name' => ['string', 'required', 'min:4', 'max:255'],
-            'email' => ['string', 'required', 'email', 'max:255', Rule::unique('users', 'email')],
-            'password' => ['string', 'required', 'max:255', Password::default()],
-        ]);
+        $validated = $request->safe()->all();
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => $request->password,
-        ]);
+        $user = User::create($validated);
 
         Auth::login($user);
 

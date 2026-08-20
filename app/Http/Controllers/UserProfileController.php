@@ -27,17 +27,18 @@ class UserProfileController extends Controller
     public function update(UserProfileRequest $request)
     {
         $user = Auth::user();
+        $validated = $request->safe()->all();
 
         $originalEmail = $user->email;
 
         $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => $request->password ?? $user->password,
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => $validated['password'] ?? $user->password,
         ]);
 
         // If The Email Was Changed, Send an  EmailChanged::class Notification
-        if ($originalEmail !== $request->email) {
+        if ($originalEmail !== $validated['email']) {
 
             Notification::route('mail', $originalEmail)
                 ->notify(new EmailChanged($user, $originalEmail));

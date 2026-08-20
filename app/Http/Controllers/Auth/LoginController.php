@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rules\Password;
 
 class LoginController extends Controller
 {
@@ -16,14 +15,11 @@ class LoginController extends Controller
         return view('auth.login');
     }
 
-    public function store(Request $request)
+    public function store(LoginRequest $request)
     {
-        $validate = $request->validate([
-            'email' => ['string', 'required', 'email', 'max:255'],
-            'password' => ['string', 'required', 'max:255', Password::default()],
-        ]);
+        $validated = $request->safe()->all();
 
-        if (! Auth::attempt($validate)) {
+        if (! Auth::attempt($validated)) {
             return back()
                 ->withErrors(['password' => 'We were unabel to authenticate using the provided credentials'])
                 ->withInput();
